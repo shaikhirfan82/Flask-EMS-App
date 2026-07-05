@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: flask-ems
-        image: yourdockerhub/flask-ems:latest
+        image: shaikhirfan82/flask-ems-app:latest
         ports:
         - containerPort: 5000
 ---
