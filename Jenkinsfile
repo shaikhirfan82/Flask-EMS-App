@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'docker build -t yourdockerhub/flask-ems:latest .'
+        sh 'docker build -t shaikhirfan82/flask-ems:latest .'
       }
     }
     stage('Push') {
