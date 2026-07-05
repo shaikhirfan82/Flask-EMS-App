@@ -10,7 +10,7 @@ pipeline {
       steps {
         withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'DOCKER_PASS')]) {
           sh 'echo $DOCKER_PASS | docker login -u shaikhirfan82 --password-stdin'
-          sh 'docker push yourdockerhub/flask-ems:latest'
+          sh 'docker push shaikhirfan82/flask-ems-app:latest'
         }
       }
     }
