@@ -1,34 +1,38 @@
 pipeline {
-  agent any
-  stages{
-        stage("Code clone")
-        {
+    agent any
 
-            steps{
-                sh "whoami"
-            clone("https://github.com/shaikhirfan82/Flask-EMS-App.git","main")
+    stages {
+
+        stage('Code Clone') {
+            steps {
+                sh 'whoami'
+                git branch: 'main', url: 'https://github.com/shaikhirfan82/Flask-EMS-App.git'
             }
         }
-  }
-  
-  stage {
-    stage('Build') {
-      steps {
-        sh 'docker build -t shaikhirfan82/flask-ems-app:latest .'
-      }
-    }
-    stage('Push') {
-      steps {
-        withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'DOCKER_PASS')]) {
-          sh 'echo $DOCKER_PASS | docker login -u shaikhirfan82 --password-stdin'
-          sh 'docker push shaikhirfan82/flask-ems:latest'
+
+        stage('Build') {
+            steps {
+                sh 'docker build -t shaikhirfan82/flask-ems-app:latest .'
+            }
         }
-      }
+
+        stage('Push') {
+            steps {
+                withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'DOCKER_PASS')]) {
+                    sh '''
+                    echo $DOCKER_PASS | docker login -u shaikhirfan82 --password-stdin
+                    docker push shaikhirfan82/flask-ems-app:latest
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'kubectl apply -f k8n/development.yml'
+                sh 'kubectl apply -f k8n/service.yml'
+            }
+        }
+
     }
-    stage('Deploy') {
-      steps {
-        sh 'kubectl apply -f k8s-deployment.yaml'
-      }
-    }
-  }
 }
