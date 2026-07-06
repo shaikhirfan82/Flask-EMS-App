@@ -1,5 +1,14 @@
 pipeline {
   agent any
+  stages{
+        stage("Code clone"){
+            steps{
+                sh "whoami"
+            clone("https://github.com/shaikhirfan82/Flask-EMS-App.git","main")
+            }
+        }
+  }
+  
   stages {
     stage('Build') {
       steps {
@@ -10,7 +19,7 @@ pipeline {
       steps {
         withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'DOCKER_PASS')]) {
           sh 'echo $DOCKER_PASS | docker login -u shaikhirfan82 --password-stdin'
-          sh 'docker push shaikhirfan82/flask-ems-app:latest'
+          sh 'docker push shaikhirfan82/flask-ems:latest'
         }
       }
     }
