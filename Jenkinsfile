@@ -1,7 +1,9 @@
 pipeline {
   agent any
   stages{
-        stage("Code clone"){
+        stage("Code clone")
+        {
+
             steps{
                 sh "whoami"
             clone("https://github.com/shaikhirfan82/Flask-EMS-App.git","main")
@@ -9,7 +11,7 @@ pipeline {
         }
   }
   
-  stages {
+  stage {
     stage('Build') {
       steps {
         sh 'docker build -t shaikhirfan82/flask-ems-app:latest .'
