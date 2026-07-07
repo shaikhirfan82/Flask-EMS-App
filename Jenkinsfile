@@ -29,9 +29,17 @@ pipeline {
 
         stage('Deploy') {
             steps {
+
+                 sh '''
+        kind delete cluster --name flask-app || true
+        kind create cluster --name flask-app
+        kubectl get nodes
+        '''
+
                 sh 'kubectl apply -f k8s-deployment.yaml'
             }
         }
 
     }
 }
+
